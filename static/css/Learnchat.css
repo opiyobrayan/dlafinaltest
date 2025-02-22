@@ -1,0 +1,81 @@
+/* 🌍 Chat Container */
+.chat-container {
+  display: flex;
+  align-items: center;
+  background-color: #011d4a;
+  border-radius: 0px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 2px;
+  color: #e6eeff;
+  margin-left: 0px;
+  margin-right: 0px;
+  overflow-y: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* 📜 Chat Input Field */
+.chat-input {
+  flex-grow: 1;
+  border: none;
+  background: none;
+  color: #e6eeff;
+  font-size: 16px;
+  outline: none;
+  padding: 10px;
+  width: 100%;
+}
+
+/* 📌 Placeholder Styling */
+.chat-input::placeholder {
+  color: #e6eeff; /* Lighter gray for placeholder */
+  opacity: 0.8;
+}
+
+/* 🚀 Send Button */
+.send-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+
+.send-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 📩 Send Icon */
+.send-icon {
+  width: 24px;
+  height: 24px;
+  color: #e6eeff;
+}
+
+/* 📱 Mobile Optimization */
+@media screen and (max-width: 768px) {
+  .chat-container {
+      flex-direction: row; /* Keeps input and button side by side */
+      padding: 6px;
+  }
+
+  .chat-input {
+      font-size: 14px;
+      padding: 8px;
+  }
+
+  .send-button {
+      padding: 6px;
+  }
+
+  .send-icon {
+      width: 20px;
+      height: 20px;
+  }
+}

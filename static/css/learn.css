@@ -1,0 +1,248 @@
+/* 🌍 Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* 📌 Main Page Container */
+.page-container {
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    height: calc(100vh - 0px);
+    margin-bottom: 0px;
+}
+
+/* 🎯 Main Content Layout */
+.content-container {
+    display: flex;
+    height: calc(100vh - 60px);
+    overflow-y: hidden;
+    position: relative;
+    flex-direction: row; /* Default: Horizontal layout */
+    overflow-x: hidden;
+    background-color: #e6eeff;
+    margin-top: 0px;
+}
+
+/* 🏗 Tutor Section & Content Section */
+.tutor-section, .content-sections {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+}
+
+/* 📚 Tutor Section (Left Panel) */
+.tutor-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 90vh;
+    width: 100%;
+    overflow-y: auto;
+    background-color: #e6eeff;
+    color: black;
+    overflow-x: hidden;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* 📖 Content Section (Right Panel) */
+.content-sections {
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex-grow: 0;
+    min-width: 20%;
+    max-width: 80%;
+    font-family: 'Roboto', 'Open Sans', 'Arial', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 480;
+    margin: 10px 0;
+    background-color: #e6eeff;
+    color: #011d4a;
+}
+
+/* 🖼️ Image Styling */
+.custom-image {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 10px auto;
+    display: block;
+    text-align: center;
+}
+
+/* 📝 Custom Blockquote Styling */
+.custom-blockquote-container {
+    border-left: 4px solid #ccc;
+    padding-left: 10px;
+    margin: 10px 0;
+    color: #555;
+    font-style: italic;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 30px;
+}
+
+/* 🔄 Resizer (Used for Adjustable Sections) */
+.resizers {
+    width: 5px;
+    cursor: col-resize;
+    background-color: #ccc;
+    position: absolute;
+    left: calc(20% - 2.5px);
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    user-select: none;
+    pointer-events: auto;
+}
+
+.resizers:hover {
+    background-color: #888;
+}
+
+/* 📚 Learning Section */
+.learn-section-page {
+    padding-left: 150px;
+    padding-right: 150px;
+    margin-right: 30px;
+    margin-left: 30px;
+    box-shadow: 3px -4px 6px rgba(0, 0, 0, 0.4);
+    margin-bottom: 15px;
+    padding-bottom: 20px;
+    margin-top: 0px;
+}
+
+/* 🎯 Image Alignment */
+.learn-section-page img {
+    display: block;
+    margin: auto;
+}
+
+/* 💬 Tutor Content */
+.tutor-content {
+    flex-grow: 1;
+    padding: 16px;
+    overflow-y: auto;
+    color: black;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    box-shadow: -2px -4px 6px rgba(0, 0, 0, 0.4);
+    margin-bottom: 0px;
+    padding-bottom: 20px;
+    margin-top: 20px;
+}
+
+/* 🎯 Takeaways Section */
+.takeaways-container {
+    background-color: #e6eeff;
+    margin: 0px auto;
+    max-width: 800px;
+    text-align: left;
+    max-height: 80vh;
+    overflow-y: auto;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+.takeaways-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* 🚀 Run Button */
+.run-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.run-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* 🔄 Spinner */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 📱 Mobile Styles: Apply when screen width is less than 768px */
+@media screen and (max-width: 768px) {
+    .content-container {
+        flex-direction: column; /* Stacks sections vertically */
+        height: auto;
+    }
+
+    .tutor-section, .content-sections {
+        width: 100%;
+        max-width: 100%;
+        flex-basis: auto;
+    }
+
+    .tutor-section {
+        height: auto;
+        padding: 10px;
+    }
+
+    .content-sections {
+        min-width: 100%;
+        max-width: 100%;
+        font-size: 16px;
+    }
+
+    .learn-section-page {
+        padding: 10px;
+        margin: 10px auto;
+        box-shadow: none;
+    }
+
+    .tutor-content {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .custom-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .takeaways-container {
+        max-width: 100%;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .resizers {
+        display: none;
+    }
+
+    .run-button {
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+    }
+}

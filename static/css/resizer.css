@@ -1,0 +1,17 @@
+.resizer {
+    width: 5px;
+    cursor: col-resize;
+    background-color: #ccc;
+    position: absolute; /* Ensures it does not affect layout */
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    user-select: none;  /* Prevents text selection */
+    /* transition: left 0.05s linear; ✅ Smooth movement */
+    pointer-events: auto; /* Ensures mouse events fire properly */
+}
+
+
+.resizer:hover {
+    background-color: #888;
+}

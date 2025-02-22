@@ -1,0 +1,100 @@
+
+.learn-navbar {
+    background-color: #fff; /* White background */
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-bottom: 1px solid #ddd; /* Subtle bottom border */
+}
+
+/* Left Side - Learn & Instructions */
+.learn-navbar-left {
+    display: flex;
+    gap: 20px;
+}
+
+/* Navbar Links */
+.nav-link {
+    color: #6c757d; /* Grayish text color */
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: normal;
+    transition: color 0.3s ease;
+}
+
+.nav-link.active {
+    font-weight: bold;
+}
+
+/* Hover Effect */
+.nav-link:hover {
+    text-decoration: none;
+    color: black;
+}
+
+/* Right Side - Help Dropdown */
+.learn-navbar-right {
+    margin-left: auto;
+    position: relative;
+}
+
+/* Help Button */
+.help-button {
+    background-color: white;
+    border: none;
+    color: #007bff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 0px solid #007bff; /* Blue border */
+}
+
+.help-button:hover {
+    text-decoration: none;
+    border: 1px solid #007bff; /* Blue border */
+    
+
+}
+
+/* Dropdown Menu */
+.dropdown-arrow{
+    color:#007bff
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    list-style-type: none;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    min-width: 200px;
+    
+}
+
+/* Dropdown Items */
+.dropdown-item {
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    color: black;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: lightblue;
+}

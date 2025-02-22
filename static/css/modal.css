@@ -1,0 +1,133 @@
+/* 🌍 Modal Button in Navbar */
+.modal-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.modal-button:hover {
+    background-color: #0056b3;
+}
+
+/* 📜 Modal List - Properly Numbered */
+.modal-list {
+    list-style-type: decimal; /* Use 1, 2, 3, ... */
+    list-style-position: inside; /* Ensure numbering aligns correctly */
+    padding-left: 20px;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+/* 📌 Modal List Item */
+.modal-list-item {
+    padding: 8px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    transition: background 0.2s ease;
+}
+
+/* 🎨 Hover Effect */
+.modal-list-item:hover {
+    background: #f0f0f0;
+}
+
+/* ✅ Selected Item Styling */
+.modal-list-item.selected {
+    background: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+/* 🎭 Modal Overlay (Dark Background) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it appears above everything */
+}
+
+/* 📦 Modal Content Box */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 600px;
+    max-width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    position: relative;
+    text-align: center;
+}
+
+/* 📌 Modal Title */
+.modal-title {
+    margin: 0;
+    font-size: 20px;
+}
+
+/* 📜 Modal Body */
+.modal-body {
+    margin: 15px 0;
+}
+
+/* ❌ Close Button */
+.modal-close {
+    padding: 8px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.modal-close:hover {
+    background: #0056b3;
+}
+
+/* 📱 Mobile Optimization */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-size: 18px;
+    }
+
+    .modal-body {
+        font-size: 14px;
+    }
+
+    .modal-list-item {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+
+    .modal-close {
+        width: 100%; /* Full-width button for better touch interaction */
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .modal-button {
+        font-size: 16px;
+        padding: 10px 15px;
+        width: 100%;
+    }
+}

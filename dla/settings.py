@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',    
     'data',
     'corsheaders'
 
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  # ✅ Add this at the TOP
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -138,19 +140,11 @@ def configure():
 #     },
 # }
 
+# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 STATIC_URL = '/static/'
-
-# # Add this line to specify additional directories where Django should look for static files
-STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, 'static'),  # This allows serving static files from a 'static' folder at the project root
-]
-
-# # This is used for collecting static files when running `collectstatic` in production
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
