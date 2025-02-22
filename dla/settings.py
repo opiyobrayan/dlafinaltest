@@ -118,17 +118,17 @@ USE_TZ = True
 def configure():
     load_dotenv()
 
-#AWS Settings
+# AWS Settings
 
-#AWS S3 Settings for Static and Media Files
+# AWS S3 Settings for Static and Media Files
 
-# AWS_ACCESS_KEY_ID = os.getenv('access_key')
-# AWS_SECRET_ACCESS_KEY = os.getenv('secrete_access_key')
+# AWS_ACCESS_KEY_ID = "AAKIASIVGK5NCA6LJKDM7"
+# AWS_SECRET_ACCESS_KEY ="pHLwElgZdZmuZYmjCna6yz3HCuhlw9PmEN3VEO4B"
 # AWS_STORAGE_BUCKET_NAME = 'dla-main-bucket'
 # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 # AWS_S3_FILE_OVERWRITE = False
 
-# Correcting STORAGES dictionary
+# # Correcting STORAGES dictionary
 # STORAGES = {
 #     'staticfiles': {
 #         'BACKEND': 'storages.backends.s3boto3.S3StaticStorage',  # Fix class name
@@ -141,13 +141,13 @@ def configure():
 
 STATIC_URL = '/static/'
 
-# Add this line to specify additional directories where Django should look for static files
+# # Add this line to specify additional directories where Django should look for static files
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # This allows serving static files from a 'static' folder at the project root
+   os.path.join(BASE_DIR, 'static'),  # This allows serving static files from a 'static' folder at the project root
 ]
 
-# This is used for collecting static files when running `collectstatic` in production
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# # This is used for collecting static files when running `collectstatic` in production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
