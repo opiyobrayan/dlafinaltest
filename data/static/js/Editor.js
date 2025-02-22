@@ -108,7 +108,7 @@ const PythonCodeEditor = ({ screenIndex, notebook }) => {
 
       // ✅ Extract lesson number from the first object in the array
       const lessonNumber = notebook[0].lesson_number;
-      const API_BASE_URL = "https://dlatest.up.railway.app";
+      const API_BASE_URL = "https://datalearnai.up.railway.app";
       try {
           const response =await fetch(`${API_BASE_URL}/api/run_code/${lessonNumber}/`, {
               method: "POST",
