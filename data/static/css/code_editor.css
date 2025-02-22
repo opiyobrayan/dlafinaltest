@@ -1,0 +1,414 @@
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Allow dynamic resizing */
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    padding-left: 2px;
+    padding-top: 5px;
+    background-color: #e6eeff;
+    margin-right: 20px;
+}
+
+.editor-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    height: 70vh;
+    overflow-y:scroll;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+    overflow-x: hidden;
+    background-color: #e6eeff;
+    color: #e6eeff;
+}
+
+.editor-title {
+    margin: 5px;
+    z-index: 2;
+    color:#011d4a;
+    background-color: #e6eeff;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.code-mirror-editor {
+    flex: 1;
+    border: 1px solid #ccc;
+    width: 100%;
+    background-color: #1e1e1e;
+}
+
+/* Code editor background (VS Code Dark Theme) */
+.code-mirror-editor .cm-editor {
+    background-color: #1e1e1e !important; /* Dark background */
+    color: #D4D4D4 !important; /* Default text color */
+}
+
+   /* The blinking curso */
+  .code-mirror-editor .cm-cursor {
+    border-left: 2px solid #e6eeff !important; /* Thick red cursor */
+    width: 2px !important;
+}
+
+/* any text typed */
+.code-mirror-editor .cm-content {
+    color:#00b389 !important;
+}
+.code-mirror-editor .cm-number {
+    color:white !important;
+}
+
+/* Customize the background of the line number sidebar */
+.code-mirror-editor .cm-gutters {
+    background-color: #1e1e1e !important; /* Dark blue background */
+    color: #ebebfa !important; /* Light text  the little dropdown next to listed number*/
+    border-right: 1px solid #ccc !important; /* Optional border */
+}
+
+/* Customize the line number text */
+.code-mirror-editor .cm-lineNumbers {
+    color: grey !important; /* Light blue for numbers */
+    font-weight: bold;
+}
+
+/* Customize the active line number highlight */
+.code-mirror-editor .cm-activeLineGutter {
+    background-color: rgba(100, 100, 255, 0.3) !important; 
+}
+
+/* ✅ Highlights the full active line background */
+.code-mirror-editor .cm-activeLine {
+    background-color: rgba(100, 100, 255, 0.3) !important; /* Light blue */
+}
+
+/* Added ensure Text Selection is Visible */
+.code-mirror-editor .cm-selectionBackground {
+    background-color: rgba(100, 100, 255, 0.3) !important; /* Light blue */
+}
+.code-mirror-editor .cm-selected {
+    background-color: rgba(255, 255, 0, 0.2) !important; /* Light yellow */
+}
+
+
+
+
+
+
+.run-button {
+    margin: 5px;
+    padding: 5px;
+    background-color: #011d4a;
+    color: #e6eeff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: flex-start;
+    padding-bottom: 2px;
+    margin-bottom: 5px;
+}
+
+
+/* ✅ Fix the resizer visibility and usability */
+.output-resizer {
+    height: 5px;  /* ✅ Make it easier to grab */
+    background: #888;
+    cursor: ns-resize;
+    width: 100%;
+    position: relative;
+    z-index: 5;
+    user-select: none;  
+    pointer-events: auto;
+}
+
+.output-resizer:hover {
+    background: #555;
+}
+
+
+/* ✅ Output section */
+/* ✅ Output section */
+  /* ✅ Output section */
+
+/* ✅ Output section */
+.output-section {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0px;
+    background-color: #e6eeff;
+    overflow-y: auto;
+    height: 200px;
+    min-height: 50px;
+    max-height: 500px;
+    position: relative;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+
+/* ✅ Sticky variable list */
+.variable-list {
+    position: sticky;
+    top: 0;
+    background-color: #011d4a;
+    padding: 2px;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid #e6eeff;
+}
+
+.variable-button {
+    padding: 8px 12px;
+    background-color: #011d4a;
+    color: #e6eeff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.variable-button:hover {
+    background-color: lightblue;
+}
+
+/* ✅ Scrollable content */
+.output-content {
+    padding: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* ✅ Single console (print) output section */
+.print-output-section {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #e6eeff;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    max-width: 90%;
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height:30vh ;
+    color:#011d4a
+}
+
+.print-output {
+    background-color: #e6eeff;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 4px;
+    font-family: "Courier New", Courier, monospace;
+    white-space: pre-wrap;  /* Wrap long lines */
+    
+}
+
+/* ✅ Each variable output block */
+.variable-output {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    padding: 5px;
+    background-color: #e6eeff;
+    max-width: 90%;
+    overflow-y: auto;
+    overflow-x:hidden;
+    max-height:50vh ;
+    flex-wrap: wrap;  /* Allows wrapping if too many items */
+    color: #011d4a;
+   
+    
+}
+
+/* ✅ Variable header with close button */
+.variable-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 2px 5px;
+    border-bottom: 1px solid #ccc;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0px;
+    margin-top: 2px;
+}
+
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: #ff4d4d;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #ff0000;
+}
+
+/* ✅ Styled tables */
+.styled-table-container {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #1e1e1e;
+    margin-right: 30px;
+    margin-left: 30px;
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: 50vh;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 90%
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+    background-color: rgba(100, 100, 255, 0.3) !important; 
+}
+
+.styled-table thead {
+    background-color: #011d4a;
+    color: #e6eeff;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-child(even) {
+    background-color: darkblue;
+}
+
+.styled-table tbody tr:hover {
+    background-color: rgba(100, 100, 255, 0.3) !important; 
+}
+
+
+/* ✅ Show output only when there's content */
+.output-section:not(:empty) {
+    display: block;
+}
+
+
+.error-output {
+    color: red;
+    font-weight: bold;
+}
+
+/* ✅ Scrollable output content */
+.output-content {
+    padding: 10px;
+}
+
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: #ff4d4d;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #ff0000;
+}
+
+
+/* This is for editor titles */
+/* styles.css */
+.tab-button {
+    background-color: rgba(100, 100, 255, 0.3) !important; 
+    border: none;
+    padding: 8px 12px;
+    margin: 4px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .tab-button:hover {
+    background-color: #ddd;
+  }
+  
+  .active-tab {
+    background-color: rgba(100, 100, 255, 0.3) !important; 
+    color: #011d4a;
+    font-weight: bold;
+    border: 2px solid #011d4a;
+  }
+
+  /* # for plot */
+  
+  .output-plot {
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-left: 50px;
+}
+
+
+
+/* # spinner animation */
+.run-button {
+    background-color: #011d4a;
+    color: #e6eeff;
+    padding: 6px 11px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  .run-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+
+  /* 📱 Mobile Optimization */
+@media screen and (max-width: 768px) {
+    .editor-section {
+        height: auto;
+    }
+
+    .run-button {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .variable-list {
+        flex-direction: column;
+    }
+
+    .styled-table-container {
+        max-height: 40vh;
+    }
+}

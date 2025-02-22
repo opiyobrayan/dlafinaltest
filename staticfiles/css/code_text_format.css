@@ -1,0 +1,146 @@
+/* 🌍 Code Navigation Container */
+.code_nav {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    max-height: 40vh;
+    overflow-x: auto;
+    background-color: #f8f9fa; /* Neutral background for readability */
+}
+
+/* 📌 Code Navbar */
+.code-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #011d4a;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 8px 12px;
+    z-index: 2;
+    position: sticky;
+    top: 0;
+}
+
+/* 🔤 Language Title */
+.language-title {
+    font-weight: bold;
+}
+
+/* 📋 Copy Button */
+.copy-button {
+    background: none;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    border-radius: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s ease-in-out;
+}
+
+.copy-button:hover {
+    background-color: #1e293b;
+}
+
+/* 🎨 Code Block Styling */
+.custom-code-block {
+    background-color: #e6eeff;
+    color: blue;
+    padding: 10px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    overflow: auto;
+    line-height: 1.2;
+    border-radius: 6px;
+}
+
+/* 📝 Syntax Highlighting */
+.custom-code-block .comment {
+    color: #6A9955; /* Green for comments */
+    font-style: italic;
+}
+
+.custom-code-block .variable {
+    color: black;
+}
+
+.custom-code-block .string {
+    color: #CE9178;
+}
+
+.custom-code-block .number {
+    color: #f44336;
+}
+
+.custom-code-block .keyword {
+    color: #C586C0;
+}
+
+.custom-code-block .function {
+    color: #00adc8;
+    font-style: italic;
+}
+
+/* 📜 Text Block */
+.text-block {
+    background-color: #e6eeff;
+    color: black;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.1);
+    max-height: 50vh;
+    line-height: 1.2;
+}
+
+/* 💻 Inline Code Styling */
+.custom-inline-code {
+    background-color: #fcecef;
+    color: #d81b60;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    border-radius: 4px;
+    padding: 2px 5px;
+}
+
+/* 📱 Mobile Optimization */
+@media screen and (max-width: 768px) {
+    .code_nav {
+        max-height: 60vh; /* Allow a bit more height on smaller screens */
+        overflow-x: hidden;
+    }
+
+    .code-navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .copy-button {
+        font-size: 14px;
+        padding: 5px 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .custom-code-block {
+        font-size: 13px;
+        padding: 8px;
+        line-height: 1.4;
+    }
+
+    .text-block {
+        font-size: 13px;
+        padding: 8px;
+        max-height: 40vh;
+    }
+}

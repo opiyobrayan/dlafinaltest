@@ -1,0 +1,44 @@
+{
+  "name": "data",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@babel/preset-env": "^7.26.8",
+    "@babel/preset-react": "^7.26.3",
+    "css-loader": "^7.1.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@babel/core": "^7.26.8",
+    "@babel/plugin-transform-class-properties": "^7.25.9",
+    "@codemirror/highlight": "^0.19.8",
+    "@codemirror/lang-python": "^6.1.7",
+    "@codemirror/language": "^6.10.8",
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.36.2",
+    "@uiw/react-codemirror": "^4.23.8",
+    "babel-loader": "^9.2.1",
+    "codemirror": "^6.0.1",
+    "html2pdf.js": "^0.10.2",
+    "install": "^0.13.0",
+    "jspdf": "^2.5.2",
+    "npm": "^11.1.0",
+    "react-icons": "^5.4.0",
+    "react-markdown": "^9.0.3",
+    "react-router-dom": "^7.1.5",
+    "react-to-print": "^3.0.5",
+    "rehype-raw": "^7.0.0"
+  }
+}

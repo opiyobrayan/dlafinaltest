@@ -1,0 +1,37 @@
+
+{% load static %}
+
+<!doctype html >
+<html lan="'eng">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- ✅ Page Title -->
+    <title>Datalearnai</title>
+
+    <!-- ✅ Favicon (Logo in Browser Tab) -->
+    <link rel="icon" type="image/png" href="{% static 'images/d-logo.png' %}">
+
+    <!-- ✅ Link to External Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/learn.css' %}">
+    <link rel="stylesheet" href="{% static 'css/LearnNav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/code_editor.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main_nav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sub_nav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/code_text_format.css' %}">
+    <link rel="stylesheet" href="{% static 'css/resizer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/LearnChat.css' %}">
+    <link rel="stylesheet" href="{% static 'css/practice_mode.css' %}">
+</head>
+ <body>
+    <script>
+        window.notebookData = {{ notebook_data|safe }};
+    </script>
+    <div id="learn-lesson-id"></div>
+    <script src="{% static 'frontend/main.js' %}"></script>
+    
+  </body>
+</html>

@@ -1,0 +1,227 @@
+/* 🌍 Navbar Container */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #011d4a; /* Dark blue background */
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+}
+
+/* 🏷️ Navbar Brand */
+.navbar-brand {
+    text-decoration: none;
+    color: #e6eeff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* 📌 Navbar Middle Section */
+.navbar-middle {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* Centers the elements */
+    align-items: center;
+    gap: 10px; /* Spacing between buttons */
+}
+
+/* 🚀 Navigation Buttons */
+.nav-btn {
+    background-color: #011d4a;
+    color: #e6eeff;
+    padding: 4px 6px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+    border: 2px solid #e6eeff;
+    min-width: 80px;
+}
+
+.nav-btn:hover {
+    background-color: blue;
+}
+
+/* ❌ Disabled Button Styling */
+.nav-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 🎨 Outline Button */
+.outline-button {
+    display: flex;
+    align-items: center;
+    background-color: #011d4a;
+    color: #e6eeff;
+    border: 0px solid #e6eeff;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.3s ease;
+}
+
+.outline-button:hover {
+    background-color: blue;
+    border-color: #e6eeff;
+}
+
+/* 📌 Icon inside button */
+.outline-button .icon {
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+/* 📜 Dropdown Navigation */
+.nav-dropdown {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 10px;
+}
+
+.nav-label {
+    font-size: 14px;
+    color: #555;
+}
+
+.nav-select {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+}
+
+/* 🏷️ Right Section - User Dropdown */
+.nav-user {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #011d4a;
+    border-radius: 5px;
+}
+
+/* 👤 User Icon */
+.user-icon {
+    font-size: 24px;
+    color: #e6eeff;
+    margin-right: 5px;
+}
+
+/* 🔽 Dropdown Arrow */
+.dropdown-arrow {
+    font-size: 16px;
+    color: #e6eeff;
+}
+
+/* 📋 Dropdown Menu */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #1c1f26;
+    list-style-type: none;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    min-width: 200px;
+}
+
+/* 📌 Dropdown Items */
+.dropdown-item {
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #e6eeff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: #333;
+}
+
+/* 🌟 Highlighted Promo Item */
+.dropdown-item.promo {
+    color: #a367ff;
+    font-weight: bold;
+}
+
+/* 🚪 Logout Button */
+.dropdown-item.logout {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+/* 📱 Mobile Optimization */
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .navbar-middle {
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        margin-top: 10px;
+    }
+
+    .nav-btn {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .outline-button {
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .nav-user {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-dropdown {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-select {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .modal-button {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+    }
+}

@@ -1,0 +1,97 @@
+/* 🌍 Practice Mode Layout */
+.practice-mode {
+    display: flex;
+    height: calc(100vh - 60px);
+    overflow-y: hidden;
+    position: relative;
+    flex-direction: row; /* Default: Horizontal layout */
+    overflow-x: hidden;
+    background-color: #1a1f36; /* Dark blue background */
+}
+
+/* 🎯 Practice Button Styling */
+.practice-button button {
+    padding: 10px 20px;
+    background-color: #011d4a;
+    color: #e6eeff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.practice-button button:hover {
+    background-color: lightblue;
+}
+
+/* 🏗 Instruction & Code Sections */
+.instruct-practice-section, .code-practice-section {
+    flex-grow: 0; /* Prevent equal expansion */
+    flex-shrink: 0;
+    flex-basis: auto;
+}
+
+/* 📖 Instruction Practice Section (Left Panel) */
+.instruct-practice-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 90vh;
+    width: 100%;
+    overflow-y: auto;
+    background-color: #e6eeff;
+    color: #011d4a;
+    font-family: 'Roboto', 'Open Sans', 'Arial', sans-serif;
+    font-size: 15px;
+    line-height: 1.9;
+    padding: 10px;
+    border-right: 2px solid #ccc; /* Add subtle separation */
+}
+
+/* 💻 Code Practice Section (Right Panel) */
+.code-practice-section {
+    background-color: #011d4a;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 10px;
+    margin: 5px;
+    width: auto; /* Allow dynamic width */
+    flex-grow: 0;
+    min-width: 20%;
+    max-width: 80%;
+    color: white;
+}
+
+/* 🚀 Mobile Optimization */
+@media screen and (max-width: 768px) {
+    .practice-mode {
+        flex-direction: column; /* Stack sections vertically */
+        height: auto;
+    }
+
+    .instruct-practice-section, .code-practice-section {
+        width: 100%;
+        max-width: 100%;
+        flex-basis: auto;
+    }
+
+    .instruct-practice-section {
+        height: auto;
+        padding: 10px;
+        border-right: none; /* Remove separator on mobile */
+    }
+
+    .code-practice-section {
+        min-width: 100%;
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .practice-button button {
+        width: 100%; /* Full width for easy tapping */
+        font-size: 18px;
+        padding: 12px;
+    }
+}

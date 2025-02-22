@@ -1,0 +1,54 @@
+/* LearnNav.css */
+.nav{
+    width:100%;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #1a1f36; /* Dark blue background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    top: 0;
+    margin-top: 0;
+    padding-right: 20px;
+    z-index: 10;
+  }
+  
+  .navbar-icons {
+    display: flex;
+    gap: 0.5rem;
+    padding: 10px;
+
+
+  }
+  
+  .navbar-icon {
+    width: 20px;
+    height: 20px;
+    background-color: #344055; /* Default background */
+    border-radius: 4px;
+  }
+  
+  .navbar-icon.active {
+    background-color: #4caf50; /* Active state background */
+  }
+  
+  .navbar-controls {
+    display: flex;
+    gap: 1rem;
+    padding: 10px;
+  }
+  
+  .navbar-control {
+    color: #ffffff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .navbar-control:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+  }
+  
