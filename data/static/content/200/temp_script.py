@@ -1,19 +1,4 @@
-import pandas as pd
-
-# ✅ Create a simple DataFrame
-
-# ✅ Create a simple DataFrame
-data = {
-    "Name": ["Alice", "Bob", "Charlie"],
-    "Age": [25, 30, 35],
-    "City": ["New York", "Los Angeles", "Chicago"]
-}
-
-df = pd.DataFrame(data)
-print(df)
-print('my name is Brayan')
-
-
+another='Another display section'
 
  
 import json

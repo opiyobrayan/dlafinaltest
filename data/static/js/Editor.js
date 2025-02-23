@@ -5,6 +5,8 @@ import { Decoration, EditorView } from "@codemirror/view";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import { RangeSetBuilder } from "@codemirror/state";
 import { tags } from "@lezer/highlight"; // ✅ Correct import
+import { RotateCcw } from "lucide-react"; // Refresh icon from Lucide
+
 
 
 const PythonCodeEditor = ({ screenIndex, notebook }) => {
@@ -32,8 +34,17 @@ const PythonCodeEditor = ({ screenIndex, notebook }) => {
 
   useEffect(() => {
     const savedCode = localStorage.getItem(getCodeKey(screenIndex));
-    setCode(savedCode || "import pandas as pd\n");
-  }, [screenIndex]);
+
+    // Find the corresponding notebook entry with the same screen_index
+    const notebookEntry = notebook.find(entry => Number(entry.sequence) === Number(screenIndex));
+    // Ensure the display value exists and is not null/undefined
+    const notebookCode = notebookEntry && notebookEntry.display ? notebookEntry.display : "";
+
+    // Set code, prioritizing savedCode if available
+    setCode(savedCode || notebookCode);
+  }, [screenIndex, notebook]);
+
+
 
   const handleCodeChange = (value) => {
     setCode(value);
@@ -91,48 +102,99 @@ const PythonCodeEditor = ({ screenIndex, notebook }) => {
     "&.cm-selected": { backgroundColor: "rgba(75, 75, 75, 0.5)" }, // ✅ Ensure selection is visible
   });
 
-  
+  const refreshEditor = () => {
+      // ✅ Find the notebook entry for the current screenIndex
+      const notebookEntry = notebook.find(entry => Number(entry.sequence) === Number(screenIndex));
 
+      // ✅ Keep only the `display` code; reset everything else
+      const displayCode = notebookEntry?.display ? notebookEntry.display : "";
+
+      // ✅ Reset state, keeping only display code
+      setCode(displayCode);
+      setOutput("");
+      setVariables({});
+      setSelectedVariables([]);
+
+      // ✅ Remove saved code & execution results from localStorage
+      localStorage.removeItem(getCodeKey(screenIndex));
+      localStorage.removeItem(getOutputKey(screenIndex));
+      localStorage.removeItem(getVariablesKey(screenIndex));
+
+      console.log("Editor refreshed! Code reset to display code:", displayCode);
+  };
+
+
+  
   const executeCode = async () => {
       setLoading(true); // Show loading indicator
       setOutput("");
       setSelectedVariables([]);
 
-      // ✅ Ensure `notebook` is an array and has at least one object
+      // ✅ Find the notebook entry for the current screenIndex
+      const notebookEntry = notebook.find(entry => Number(entry.sequence) === Number(screenIndex));
+
+      // ✅ Extract initial code from the notebook entry (fallback to empty string)
+      const initialCode = notebookEntry?.innitial ? notebookEntry.innitial + "\n\n" : "";
+
+      // ✅ Extract variables from the initial code (to track which ones to ignore)
+      const initialVariables = new Set([...initialCode.matchAll(/\b([a-zA-Z_][a-zA-Z0-9_]*)\b(?=\s*=)/g)].map(match => match[1]));
+
+      // ✅ Extract variables from user-entered code (these should be kept)
+      const userDefinedVariables = new Set([...code.matchAll(/\b([a-zA-Z_][a-zA-Z0-9_]*)\b(?=\s*=)/g)].map(match => match[1]));
+
+      console.log("Variables in Initial Code (Potentially Ignored):", initialVariables);
+      console.log("Variables in User Code (Kept):", userDefinedVariables);
+
+      // ✅ Merge initial code with user-entered code
+      const finalCode = initialCode + code;
+
+      // ✅ Debugging logs
+      console.log("Initial Code:", initialCode);
+      console.log("User Code:", code);
+      console.log("Final Code to Execute:", finalCode);
+
+      // ✅ Ensure lesson number is available
       if (!Array.isArray(notebook) || notebook.length === 0 || !notebook[0].lesson_number) {
           console.error("❌ Error: Lesson number is missing or notebook is empty!");
           setOutput("Error: Lesson number is missing.");
-          setLoading(false); // Hide loading indicator on error
+          setLoading(false); // Hide loading indicator
           return;
       }
 
-      // ✅ Extract lesson number from the first object in the array
+      // ✅ Extract lesson number for API call
       const lessonNumber = notebook[0].lesson_number;
-      const API_BASE_URL = "https://dlatest.up.railway.app";
+
       try {
-          const response =await fetch(`${API_BASE_URL}/api/run_code/${lessonNumber}/`, {
+          const response = await fetch(`/api/run_code/${lessonNumber}/`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ code }),
+              body: JSON.stringify({ code: finalCode }), // ✅ Send merged code
           });
 
           if (!response.ok) throw new Error(`Server error: ${response.statusText}`);
 
           const data = await response.json();
+
+          // ✅ Filter variables: Ignore those from initial code unless they exist in user code
+          const filteredVariables = Object.fromEntries(
+              Object.entries(data.variables || {}).filter(([varName]) => 
+                  !initialVariables.has(varName) || userDefinedVariables.has(varName) 
+              )
+          );
+
           setOutput(data.output ? data.output.trim() : "");
-          setVariables(data.variables || {});
+          setVariables(filteredVariables); // ✅ Store only relevant user-defined variables
 
           localStorage.setItem(getOutputKey(screenIndex), data.output ? data.output.trim() : "");
-          localStorage.setItem(getVariablesKey(screenIndex), JSON.stringify([]));
+          localStorage.setItem(getVariablesKey(screenIndex), JSON.stringify(filteredVariables));
       } catch (error) {
           console.error("❌ API Request Failed:", error);
           setOutput("Error connecting to the server.");
           localStorage.setItem(getOutputKey(screenIndex), "Error connecting to the server.");
       } finally {
-          setLoading(false); // Hide loading indicator after execution completes
+          setLoading(false); // Hide loading indicator
       }
   };
-
 
 
 
@@ -220,7 +282,12 @@ const PythonCodeEditor = ({ screenIndex, notebook }) => {
           >
             {file.title}
           </button>
+          
         ))}
+        <button onClick={refreshEditor} className="refresh-button">
+          <RotateCcw size={20} />
+        </button>
+
         </h3>
 
 
