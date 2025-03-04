@@ -1,4 +1,16 @@
-another='Another display section'
+import pandas as pd
+
+data = {
+    'ID': range(1, 11),
+    'Name': [f'Item {i}' for i in range(1, 11)],
+    'Value': [i * 10 for i in range(1, 11)]
+}
+
+# Create a DataFrame
+df_test = pd.DataFrame(data)
+
+my_name='Brayan Opiyo'
+overall_testing='this is the display section'
 
  
 import json

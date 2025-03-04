@@ -8,4 +8,5 @@ urlpatterns = [
     path('lessons', views.lesson_list, name='lesson_list'),
     path('lesson/<int:lesson_id>/', views.learn, name='learn'),
     path("api/run_code/<int:lesson_id>/", views.run_code, name="run_code"),  # ✅ Pass `lesson_id` dynamically
+    path("api/validate_code/<int:lesson_id>/", views.validate_code, name="validate_code"),
 ]

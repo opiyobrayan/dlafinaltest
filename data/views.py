@@ -11,6 +11,8 @@ import sys
 import json
 import pandas as pd
 import re
+import textwrap
+import sys
 # Create your views here.
 
 def home(request):
@@ -32,10 +34,11 @@ def extract_metadata(notebook_content):
     return None
 
 # Merging the cells:
-
 def merge_cells(cells):
-    """Merge cells with the same screen_index."""
+    """Merge cells with the same screen_index, ensuring `answer_checker` is recorded only once."""
     merged = {}
+    answer_checker_set = set()  # Track which screen indexes already have an answer_checker
+
     for cell in cells:
         index = cell["screen_index"]
         if index not in merged:
@@ -44,16 +47,23 @@ def merge_cells(cells):
             # Merge additional data into the existing screen
             for key in ["display", "answer", "innitial"]:
                 if key in cell and cell[key]:
-                    # Convert the value to a string to avoid NoneType errors
                     merged[index][key] = (
                         (merged[index].get(key, "") or "") + "\n" + cell[key]
                     ).strip()
-    return list(merged.values())
+                    
+        # ✅ Ensure answer_checker is only assigned once per screen_index
+        if "answer_checker" in cell and cell["answer_checker"]:
+            if index not in answer_checker_set:  # Only set if not already recorded
+                merged[index]["answer_checker"] = cell["answer_checker"].strip()
+                answer_checker_set.add(index)  # Mark as recorded
 
+    return list(merged.values())
 
 #processing notebook:
 # Processing notebook:
 # Processing notebook:
+import ast
+
 def process_notebook(content):
     """Process notebook cells into structured screens."""
     screens = []
@@ -68,6 +78,7 @@ def process_notebook(content):
         hint = None
         display = None
         answer = None
+        answer_checker = None
         innitial = None
         learn_content = []
         metadata = None
@@ -78,115 +89,202 @@ def process_notebook(content):
         processing_answer = False
         processing_innitial = False
 
-        # **🔹 Store instructions with extra line breaks**
         instruction_lines = []
 
         for line in lines:
             stripped_line = line.rstrip()  # Preserve spaces for indentation
 
-            # Capture the title (Markdown H1)
             if stripped_line.startswith("# ") and not title:
                 title = stripped_line.strip("# ").strip()
-
-            # Extract metadata from the notebook cell
             elif stripped_line.startswith("<!---"):
                 metadata = extract_metadata(stripped_line)
-
-            # Handling different sections of the cell
             elif stripped_line.startswith("## Display"):
                 processing_display = True
                 processing_answer = processing_innitial = processing_hint = False
                 display = ""
                 continue
-
             elif stripped_line.startswith("## Answer"):
                 processing_answer = True
                 processing_display = processing_innitial = processing_hint = False
                 answer = ""
+                answer_checker = ""
                 continue
-
             elif stripped_line.startswith("## Innitial"):
                 processing_innitial = True
                 processing_display = processing_answer = processing_hint = False
                 innitial = ""
                 continue
-
             elif stripped_line.startswith("## Instructions"):
                 processing_instructions = True
                 processing_hint = processing_display = processing_answer = processing_innitial = False
                 instruction_lines = []
                 continue
-
             elif stripped_line.startswith("## Hint"):
                 processing_hint = True
                 processing_instructions = processing_display = processing_answer = processing_innitial = False
                 hint = ""
                 continue
 
-            # **Handle instructions (preserve correct list structure)**
             elif processing_instructions:
                 if instruction_lines and stripped_line.startswith("- "):
-                    instruction_lines.append("")  # Add an extra newline before nested list
+                    instruction_lines.append("")  # Add extra newline before nested list
                 instruction_lines.append(stripped_line)
-                continue  # Move to next line
-
-            # Handle hints
+                continue
             elif processing_hint:
                 hint += stripped_line + "\n"
-
-            # Handle display content
             elif processing_display:
                 display += stripped_line + "\n"
-
-            # Handle answers
             elif processing_answer:
                 answer += stripped_line + "\n"
+                answer_checker =textwrap.dedent("""
+import ast
+import io
+import sys
+                                                
+def capture_print_output(code):
+    # Captures the printed output of a code execution.
+    captured_output = io.StringIO()
+    original_stdout = sys.stdout  # Save the original stdout
+    sys.stdout = captured_output  # Redirect stdout to StringIO
 
-            # Handle initial code blocks
+    try:
+        exec(code, {}, {})
+    except Exception as e:
+        sys.stdout = original_stdout  # Restore stdout even if an error occurs
+        print(f"Error executing print statements: {e}")
+        return ""
+    finally:
+        sys.stdout = original_stdout  # Always restore stdout
+
+    return captured_output.getvalue().strip()                                                
+def execute_and_validate():
+
+    #  Executes the expected solution and learner's code, then validates dynamically.
+
+    expected_globals = {}  # Store expected answer variables
+    learner_globals = {}  # Store learner's answer variables
+    expected_ast = ast.parse(EXPECTED_CODE)  # Parse expected function/class structure
+    learner_ast = ast.parse(LEARNER_CODE)  # Parse learner function/class structure
+
+    try:
+        # ✅ Capture expected print output
+        expected_output = capture_print_output(EXPECTED_CODE)
+        learner_output = capture_print_output(LEARNER_CODE)
+
+        # ✅ Execute expected code to learn variables
+        exec(EXPECTED_CODE, {}, expected_globals)
+
+        # ✅ Extract all user-defined variables, functions, classes
+        expected_variables = {var: expected_globals[var] for var in expected_globals if not var.startswith("__")}
+        
+        # ✅ Execute learner's code
+        exec(LEARNER_CODE, {}, learner_globals)
+
+        feedback = []
+
+        # ✅ Validate Variables
+        for var_name, expected_value in expected_variables.items():
+            if var_name in ["my_function", "MyClass"]:  # Skip functions and classes here
+                continue
+            
+            if var_name not in learner_globals:
+                feedback.append(f"Error: Variable `{var_name}` is missing!")
+                continue
+
+            learner_value = learner_globals[var_name]
+            expected_type = type(expected_value)
+
+            if not isinstance(learner_value, expected_type):
+                feedback.append(f"Incorrect! Expected `{var_name}` to be `{expected_type.__name__}`, but got `{type(learner_value).__name__}`")
+                continue
+
+            if hasattr(expected_value, '__len__'):  # Check length for lists, dicts, tuples, sets
+                expected_length = len(expected_value)
+                learner_length = len(learner_value)
+                if learner_length != expected_length:
+                    feedback.append(f"Incorrect! Expected `{var_name}` to have `{expected_length}` elements, but got `{learner_length}`")
+
+            if learner_value != expected_value:
+                feedback.append(f"Warning: `{var_name}` has the correct structure but different values.")
+
+        # ✅ Validate Functions
+        expected_functions = {node.name: node for node in expected_ast.body if isinstance(node, ast.FunctionDef)}
+        learner_functions = {node.name: node for node in learner_ast.body if isinstance(node, ast.FunctionDef)}
+
+        for func_name, expected_func_node in expected_functions.items():
+            if func_name not in learner_functions:
+                feedback.append(f"Error: Function `{func_name}()` is missing!")
+                continue
+
+            learner_func_node = learner_functions[func_name]
+            if ast.dump(learner_func_node) != ast.dump(expected_func_node):
+                feedback.append(f"Warning: Function `{func_name}()` is defined but has different logic.")
+
+        # ✅ Validate Classes
+        expected_classes = {node.name: node for node in expected_ast.body if isinstance(node, ast.ClassDef)}
+        learner_classes = {node.name: node for node in learner_ast.body if isinstance(node, ast.ClassDef)}
+
+        for class_name, expected_class_node in expected_classes.items():
+            if class_name not in learner_classes:
+                feedback.append(f"Error: Class `{class_name}` is missing!")
+                continue
+
+            learner_class_node = learner_classes[class_name]
+            if ast.dump(learner_class_node) != ast.dump(expected_class_node):
+                feedback.append(f"Warning: Class `{class_name}` is defined but has different methods or structure.")
+
+            # ✅ Validate Print Output
+            if learner_output != expected_output:
+                feedback.append(f"Incorrect print output! Expected `{expected_output}`, but got `{learner_output}`")
+
+            # ✅ Ensure feedback is printed properly
+            # ✅ Ensure feedback is printed properly with escaped newlines
+            # ✅ Properly escape newlines before returning
+            result = ("; ".join(feedback) if feedback else "All variables, functions, classes, and print outputs are correct!")
+            print(result)  # Ensures output is displayed
+            return result
+
+
+    except Exception as e:
+        return f"Error executing code: {e}"
+feedback=execute_and_validate()
+print(feedback)
+""")
             elif processing_innitial:
                 innitial += stripped_line + "\n"
-
-            # Preserve images and text content in Learn section
             elif "<img" in line:
                 learn_content.append(line.strip())
-
-            # Ignore center tags but preserve other content
             elif not ("<center>" in line or "</center>" in line):
                 learn_content.append(line)
 
-        # Convert learn content into properly formatted Markdown
         learn_content = "\n\n".join([line for line in learn_content if line]).strip()
 
-        # **Ensure screen_index is properly assigned**
         if metadata and "screen_index" in metadata:
             screen_index = metadata["screen_index"]
         elif processing_display or processing_answer or processing_innitial:
-            screen_index = last_screen_index  # Inherit from previous valid screen
+            screen_index = last_screen_index
         else:
-            screen_index = f"{i + 1}"  # Generate a dynamic screen index
+            screen_index = f"{i + 1}"
 
-        last_screen_index = screen_index  # Update last valid screen index
-        lesson_number = screen_index.split(".")[0]  # ✅ Get the first part
+        last_screen_index = screen_index
+        lesson_number = screen_index.split(".")[0]
 
-
-        # Store processed screen data
         screen = {
-            'lesson_number':lesson_number,
+            'lesson_number': lesson_number,
             "screen_index": screen_index,
             "sequence": metadata["sequence"] if metadata and "sequence" in metadata else None,
             "title": title,
             "type": metadata["type"] if metadata and "type" in metadata else None,
             "experimental": metadata["experimental"] if metadata and "experimental" in metadata else None,
             "learn": learn_content if learn_content else None,
-            
-            # **Ensure extra newlines for nested lists in instructions**
             "instructions": "\n".join(instruction_lines).strip() if instruction_lines else None,
-
             "hint": hint.strip() if hint else None,
             "display": display.strip() if display else None,
-            "answer": answer.strip() if answer else None,
+            "answer": answer.strip() if answer and answer.strip() else None,
+            "answer_checker": answer_checker.strip() if answer_checker and answer_checker.strip() else None,
             "innitial": innitial.strip() if innitial else None,
         }
+
         screens.append(screen)
 
     return merge_cells(screens)
@@ -423,6 +521,66 @@ if plt.get_fignums():
         output_text = "\n".join(formatted_output)
 
         return JsonResponse({"output": output_text, "variables": variables})
+
+    except Exception as e:
+        print("❌ Internal Server Error:", str(e))
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+
+@csrf_exempt
+def validate_code(request, lesson_id):
+    """API Endpoint to validate Python code by comparing it to the expected answer."""
+    if request.method != "POST":
+        return JsonResponse({"error": "This API only supports POST requests."}, status=405)
+
+    try:
+        print(f"📝 Received Lesson ID: {lesson_id}")
+
+        # ✅ Read JSON input safely
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+        except json.JSONDecodeError as e:
+            print("❌ JSON Decode Error:", e)
+            return JsonResponse({"error": "Invalid JSON format."}, status=400)
+
+        # ✅ Validate JSON structure
+        if not all(key in data for key in ["code"]):
+            return JsonResponse({"error": "Missing required fields in request"}, status=400)
+
+        final_code = data["code"].strip()
+
+        if not final_code:
+            return JsonResponse({"error": "Code is missing"}, status=400)
+
+        # ✅ Prevent multiple occurrences of `answer_checker`
+        # If `execute_and_validate()` is already inside `final_code`, do not append it
+        print("📜 Final Code for Validation:\n", final_code)
+
+        # ✅ Define script path
+        lesson_folder = Path(settings.BASE_DIR) / "data" / "static" / "content" / str(lesson_id)
+        script_path = lesson_folder / "validate_script.py"
+
+        # ✅ Write script to file
+        with open(script_path, "w", encoding="utf-8") as script_file:
+            script_file.write(final_code)
+
+        # ✅ Run script
+        result = subprocess.run(
+            [sys.executable, script_path], 
+            cwd=lesson_folder,  
+            capture_output=True, 
+            text=True,
+            encoding="utf-8"
+        )
+
+        print("📜 Execution Output:\n", result.stdout if result.stdout else result.stderr)
+
+        # ✅ Extract the last line of output to avoid duplicates
+        output_lines = result.stdout if result.stdout else result.stderr
+        cleaned_output = output_lines[-1].strip()
+
+        return JsonResponse({"output":output_lines})
 
     except Exception as e:
         print("❌ Internal Server Error:", str(e))

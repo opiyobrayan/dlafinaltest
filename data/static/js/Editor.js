@@ -195,6 +195,63 @@ const PythonCodeEditor = ({ screenIndex, notebook }) => {
           setLoading(false); // Hide loading indicator
       }
   };
+  const executeAndValidate = async () => {
+    setLoading(true);
+    setOutput("");
+    setSelectedVariables([]);
+
+    const notebookEntry = notebook.find(entry => Number(entry.sequence) === Number(screenIndex));
+
+    if (!notebookEntry) {
+        console.error("❌ Error: Notebook entry not found!");
+        setOutput("Error: Notebook entry missing.");
+        setLoading(false);
+        return;
+    }
+
+    const answerChecker = (notebookEntry?.answer_checker || "").trim();
+    if (!answerChecker) {
+        console.error("❌ Error: answer_checker is missing in notebook!");
+        setOutput("Error: Answer checker is missing.");
+        setLoading(false);
+        return;
+    }
+
+    const expectedCode = notebookEntry?.answer 
+        ? 'EXPECTED_CODE = """\n' + notebookEntry.answer.trim() + '\n"""\n'
+        : "";
+
+    const learnerCode = 'LEARNER_CODE = """\n' + code.trim() + '\n"""\n';
+
+    const finalCode = expectedCode + learnerCode + answerChecker;
+
+    console.log("Final Code for Validation:", finalCode);
+
+    const lessonNumber = notebook[0].lesson_number;
+
+    try {
+        const response = await fetch(`/api/validate_code/${lessonNumber}/`, {  
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: finalCode }),
+        });
+
+        if (!response.ok) throw new Error(`Server error: ${response.statusText}`);
+
+        const data = await response.json();
+
+        setOutput(data.output ? data.output.trim() : "");
+
+        localStorage.setItem(getOutputKey(screenIndex), data.output ? data.output.trim() : "");
+
+    } catch (error) {
+        console.error("❌ API Request Failed:", error);
+        setOutput("Error connecting to the server.");
+        localStorage.setItem(getOutputKey(screenIndex), "Error connecting to the server.");
+    } finally {
+        setLoading(false);
+    }
+  };
 
 
 
@@ -383,6 +440,16 @@ const PythonCodeEditor = ({ screenIndex, notebook }) => {
           "Run Code"
         )}
       </button>
+      <button onClick={executeAndValidate} className="submit-button" disabled={loading}>
+          {loading ? (
+              <>
+                  <span className="spinner"></span> Submitting...
+              </>
+          ) : (
+              "Submit Answer"
+          )}
+      </button>
+
     </div>
   );
 };
